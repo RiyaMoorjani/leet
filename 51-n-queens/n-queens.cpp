@@ -3,8 +3,8 @@ public:
     bool isSafe(int row, int col, vector<string>& board, int n) {
         
         // column check
-        for (int i = 0; i < row; i++) {
-            if (board[i][col] == 'Q') return false;
+        for (int j = col-1;j>=0; j--) {
+            if (board[row][j] == 'Q') return false;
         }
 
         // upper-left diagonal
@@ -13,30 +13,30 @@ public:
         }
 
         // upper-right diagonal
-        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+        for (int i = row + 1, j = col - 1; j >= 0 && i < n; j--, i++) {
             if (board[i][j] == 'Q') return false;
         }
 
         return true;
     }
 
-    void solve(int row, int n, vector<string>& board,
+    void solve(int col , int n, vector<string>& board,
                vector<vector<string>>& ans) {
 
         // base case
-        if (row == n) {
+        if (col== n) {
             ans.push_back(board);
             return;
         }
 
-        for (int col = 0; col < n; col++) {
+        for (int row = 0; row < n; row++) {
             if (isSafe(row, col, board, n)) {
 
                 // place queen
                 board[row][col] = 'Q';
 
                 // recurse
-                solve(row + 1, n, board, ans);
+                solve(col + 1, n, board, ans);
 
                 // backtrack
                 board[row][col] = '.';
