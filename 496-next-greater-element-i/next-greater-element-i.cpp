@@ -1,33 +1,30 @@
 class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-       
-    
-    unordered_map<int,int> mp;
     stack<int> st;
-
-    for(int num :nums2) {
-        // remove smaller elements
-        while(!st.empty() && st.top() < num) {
-            mp[st.top()]=num;
+    unordered_map<int , int> mp;
+    int n=nums2.size();
+    for(int i=n-1;i>=0;i--){
+        while(!st.empty() && st.top()<=nums2[i]){
             st.pop();
         }
-        // if agar greater element nahi hai toh bhi push kardo 
-        st.push(num);
+        if(st.empty()){
+            mp[nums2[i]]=-1;
+        }
+        else{
+            mp[nums2[i]]=st.top();
+        }
+        st.push(nums2[i]);
 
     }
-    //agar stack empty nahi hai but large element bhi nahi mila hai toh baad meh stack empty karne ke liye -1 dalo 
-    while (!st.empty()){
-        mp[st.top()]=-1;
-        st.pop();
-    }
-
     vector<int> ans;
-    for(int num : nums1) {
+    for (int num : nums1){
         ans.push_back(mp[num]);
     }
 
+
     return ans;
+    
 
     }
 };
