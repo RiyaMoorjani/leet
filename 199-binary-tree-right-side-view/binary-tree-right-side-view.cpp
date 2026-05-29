@@ -12,33 +12,28 @@
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
-        
-        // code here
-        if(root==NULL){
-            return {};
-        }  
-        
-        queue<TreeNode*> que;
-        que.push(root);
         vector<int> res;
-        while(!que.empty()){
-            int n=que.size();//size of the curr generation 
-            res.push_back(que.front()->val);//pehle wala part of the queue in inorder is left view 
-            while(n--){//check left and  right of current level 
-                TreeNode* node=que.front();
-                que.pop();
-                if(node->right){
-                    que.push(node->right);
-                }
-                
-                if(node->left){
-                    que.push(node->left);
-                }
-                
-            }
-            
+        if(root==NULL){
+            return res;
         }
+        queue<TreeNode *> q;
+        q.push(root);
+        while(!q.empty()){
+            
+            int n=q.size();
+            res.push_back(q.front()->val);//right view will be the front of que so first pusjh that 
+            while(n--){//go left and  right of the curr level 
+                TreeNode* node=q.front();
+                q.pop();
+                if(node->right){//to get right at front we pushh right first 
+                    q.push(node->right);
+                }
+                if(node->left){
+                    q.push(node->left);
+                }
+            }
+        }
+        
         return res;
-    
     }
 };
