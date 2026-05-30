@@ -2,42 +2,33 @@ class Solution {
 public:
     vector<int> asteroidCollision(vector<int>& asteroids) {
         stack<int> st;
-
-        for (int &a: asteroids) {
-           
-            
-            // collission happens when st - pos next neg
-            while (!st.empty() && st.top() > 0 && a < 0) {
-                int sum = a+st.top();
-                if (sum < 0) {
-                    //st ast destroyed
-                    st.pop(); // stack asteroid destroyed
+        st.push(asteroids[0]);
+        for(int i=1;i<asteroids.size();i++){
+            bool des=false;
+            while(!st.empty() && st.top()>0 && asteroids[i]<0){
+                if(abs(asteroids[i])>st.top()){
+                    st.pop();
                 }
-                else if (sum>0) {//st wala bada
-                    a=0;//no pop current destroy
-                    //a=0 means current wala add nahi hoga
+                else if(abs(asteroids[i])==st.top()){
+                    //remove both 
+                    st.pop();
+                    des=true;
+                    break;
                 }
-                else {
-                 // dono equal 
-                    st.pop();//pop bhi hoga
-                    a=0;//current destroy hoga
+                else{//curr ast is destroyed 
+                    des=true;
+                    break;
                 }
             }
-
-            
-            if(a!=0){
-                st.push(a);
+            if(!des){//if ast still remain and is not des 
+                st.push(asteroids[i]);
             }
-            
         }
-
-        // Convert stack tto vector to reverse
-        vector<int> result(st.size());
-        for (int i = st.size() - 1; i >= 0; i--) {
-            result[i] = st.top();
+        vector<int> ans(st.size());
+        for(int i=st.size()-1; i>=0;i--){
+            ans[i]=st.top();
             st.pop();
         }
-
-        return result;
+        return ans;
     }
 };
