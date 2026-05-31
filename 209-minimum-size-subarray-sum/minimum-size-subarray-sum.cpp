@@ -8,11 +8,12 @@ public:
 
         for(int r=0;r<n;r++){
             sum+=nums[r];
+            
             while(sum>=target){
                 ans=min(ans,r-l+1);
                 sum-=nums[l];
                 l++;
-                
+              
             }
         }
         if(ans!=INT_MAX){
