@@ -10,49 +10,58 @@
  */
 class Solution {
 public:
-    ListNode* middlenode(ListNode* head){
-            ListNode* slow=head;
-            ListNode* fast=head;
-            ListNode* prev = NULL;
-            while(fast!=NULL && fast->next!=NULL){
-                prev=slow;
-                slow=slow->next;
-                fast=fast->next->next;
-            }
-        if (prev) prev->next = NULL; 
+    ListNode* findMiddle(ListNode* head){
+        ListNode* slow=head;
+        ListNode* fast=head->next;
+        while(fast!=NULL && fast->next!=NULL){
+            slow=slow->next;
+            fast=fast->next->next;
+
+        }
         return slow;
     }
-    ListNode* mergeLL(ListNode* l1, ListNode* l2){
-        ListNode* dummy=new ListNode(-1);
-        ListNode* temp=dummy;
-        while(l1!=NULL && l2!=NULL){
-           if(l1->val <= l2->val){
-            temp->next=l1;
-            l1=l1->next;
-           } else{
-            temp->next=l2;
-            l2=l2->next;
-           }
-           temp=temp->next;
+    ListNode* merge(ListNode* left,ListNode* right){
+        ListNode* dummy =new ListNode(0);
+        ListNode* ptr=dummy;
+        
+        while(left!=NULL && right!= NULL){
+            if(left->val<right->val){
+                ptr->next=left;
+                left=left->next;
+            }else{
+                ptr->next=right;
+                
+                right=right->next;
+
+            }
+            ptr=ptr->next;
         }
-        if(l1!=NULL){
-            temp->next=l1;
+        while(left!=NULL){
+            ptr->next=left;
+            left=left->next;
+            ptr=ptr->next;
+            
         }
-        else{
-            temp->next=l2;
+        while(right!=NULL){
+            ptr->next=right;
+            right=right->next;
+            ptr=ptr->next;
         }
-    return dummy->next;
+
+        return dummy->next;
     }
 
     ListNode* sortList(ListNode* head) {
         if(head==NULL || head->next==NULL){
             return head;
         }
-        ListNode* middle=middlenode(head);
-       
-        ListNode* left=sortList(head);
-        ListNode* right=sortList(middle);
-        return mergeLL(left,right);
+        ListNode* mid=findMiddle(head);
+        ListNode* left=head;
+        ListNode* right=mid->next;
+        mid->next=NULL;
+        left=sortList(left);
+        right=sortList(right);
+        return merge(left,right);
         
     }
 };
