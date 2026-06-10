@@ -15,12 +15,14 @@ public:
         if(root==NULL){
             return 0;
         }
-        //calculate dono side sum
-        int leftmaxsum=max(0,findmaxpathsum(root->left,maxi));
-        int rightmaxsum=max(0,findmaxpathsum(root->right,maxi));
-        maxi=max(maxi,leftmaxsum+rightmaxsum+root->val);
-        //but return single path , either elft or right
-        return max(leftmaxsum,rightmaxsum)+root->val;
+        int l=findmaxpathsum(root->left,maxi);
+        int r=findmaxpathsum(root->right,maxi);
+        //options
+        int ek_side_acha=max(l,r)+root->val;
+        int root_acha_hai=root->val;
+        int neech_ek_cycle =l+r+root->val;//iss case me upar ke nodes explore nahi kar sakte 
+        maxi=max(maxi,max({ek_side_acha,root_acha_hai,neech_ek_cycle}));
+        return max(ek_side_acha,root_acha_hai);
     }
     int maxPathSum(TreeNode* root) {
         int maxi=INT_MIN;
