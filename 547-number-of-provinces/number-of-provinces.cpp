@@ -1,35 +1,51 @@
 class Solution {
 public:
-    void dfs(map<int,list<int>> &adj,int node,vector<int>& visited ){
-        visited[node]=1;
-        for(auto neighbor : adj[node]){
-            if(!visited[neighbor]){
-                dfs(adj,neighbor,visited);
+
+    void solve(int curr, vector<vector<int>>& adj, vector<bool>& vis) {
+
+        vis[curr] = true;
+
+        for(int neighbour : adj[curr]) {
+
+            if(!vis[neighbour]) {
+                solve(neighbour, adj, vis);
             }
         }
     }
 
     int findCircleNum(vector<vector<int>>& isConnected) {
-        //create adj list
-        map<int,list<int>> adj;
-        int n=isConnected.size();
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                if(isConnected[i][j]==1 && i!=j){
-                adj[i].push_back(j);
-                adj[j].push_back(i);
+
+        int n = isConnected.size();
+
+        // 1-based adjacency list
+        vector<vector<int>> adj(n + 1);
+
+        vector<bool> vis(n + 1, false);
+
+        // Build graph
+        for(int i = 1; i <= n; i++) {
+
+            for(int j = 1; j <= n; j++) {
+
+                if(i != j && isConnected[i - 1][j - 1] == 1) {
+
+                    adj[i].push_back(j);
                 }
             }
         }
-        vector<int> visited(n,0);
-        int cnt=0;
-        for(int i=0;i<n;i++){
-            if(!visited[i]){
+
+        int cnt = 0;
+
+        for(int i = 1; i <= n; i++) {
+
+            if(!vis[i]) {
+
                 cnt++;
-                dfs(adj,i,visited);
+
+                solve(i, adj, vis);
             }
         }
+
         return cnt;
-        
     }
 };
