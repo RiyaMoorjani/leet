@@ -21,16 +21,10 @@ public:
         if(p!=NULL && q==NULL){
             return false;
         }
-
+        if(p->val!=q->val) return false;
         bool leftans=isSameTree(p->left,q->left);
         bool rightans=isSameTree(p->right,q->right);
-        bool value=(p->val==q->val);
-        if(leftans && rightans && value){
-            return true;
-        }
-        else{
-            return false;
-        }
         
+        return leftans && rightans;
     }
 };
