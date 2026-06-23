@@ -1,28 +1,18 @@
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {
-        // Initialize answer, max and min product as first element
-        int res = nums[0];
-        int maxProd = nums[0];
-        int minProd = nums[0];
-
-        // Traverse from second element
-        for (int i = 1; i < nums.size(); i++) {
-            // Store current number
-            int curr = nums[i];
-
-            // If current number is negative, swap max and min
-            if (curr < 0) swap(maxProd, minProd);
-
-            // Update max and min product ending at current index
-            maxProd = max(curr, maxProd * curr);
-            minProd = min(curr, minProd * curr);
-
-            // Update global result
-            res = max(res, maxProd);
+        //dp approach 
+        int n=nums.size();
+        int dpmin[n];
+        int dpmax[n];
+        dpmin[0]=nums[0];
+        dpmax[0]=nums[0];
+        int ans=nums[0];
+        for(int i=1;i<n;i++){
+            dpmin[i]=min({nums[i],dpmin[i-1]*nums[i],dpmax[i-1]*nums[i]});
+            dpmax[i]=max({nums[i],dpmin[i-1]*nums[i],dpmax[i-1]*nums[i]});
+            ans=max(ans,dpmax[i]);
         }
-
-        // Return the result
-        return res;
+        return ans;
     }
 };
